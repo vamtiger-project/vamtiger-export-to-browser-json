@@ -31,7 +31,7 @@ export interface IExportToBrowserJson {
 }
 
 export interface IGetExportText {
-    fileText: string;
+    text: string;
     name: string;
 }
 

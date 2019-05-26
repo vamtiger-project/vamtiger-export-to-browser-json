@@ -10,21 +10,27 @@ const { jsonScript: prefix } = Selector;
 const { multiSpaces, newlines  } = regex;
 const { space } = StringConstant;
 
-export default ({ fileText, name }: IGetExportText) => `(() => {
-    const selector = '${prefix}[data-name="${name}"]';
-    const existingScript = document.head.querySelector(selector);
-    const script = !existingScript && document.createElement('script');
-    const json = script && {
-        json: "${fileText}"
-    };
+const { stringify } = JSON;
 
-    if (script) {
-        script.dataset.name = '${name}';
-        script.type = '${MimeType.json}';
-        script.innerHTML = JSON.stringify(json);
-        document.head.appendChild(script);
-    }
-})();`
-.trim()
-.replace(multiSpaces, space)
-.replace(newlines, space);
+export default ({ text, name }: IGetExportText) => {
+    const jsonText = stringify({
+        name,
+        text
+    });
+    const exportText = `(() => {
+        const { stringify } = JSON;
+        const selector = '${prefix}[data-name="${name}"]';
+        const existingScript = document.querySelector(selector);
+        const script = !existingScript && document.createElement('script');
+
+        if (script) {
+            script.type = 'application/json';
+            script.dataset.name = '${name}';
+            script.innerHTML = stringify(${jsonText});
+
+            document.head.appendChild(script);
+        }
+    })()`.trim();
+
+    return exportText;
+}

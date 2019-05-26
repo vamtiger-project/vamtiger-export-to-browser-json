@@ -35,7 +35,7 @@ export default async function main({ file }: IExportToBrowserJson) {
         Extension.json,
         Extension.js
     ].join(period);
-    const exportFileNameJson = [
+    const name = [
         fileName,
         Extension.json,
     ].join(period);
@@ -43,12 +43,10 @@ export default async function main({ file }: IExportToBrowserJson) {
         directoryPath,
         exportFileName
     );
-    const fileText = await getFileText(file);
-    const rawText = String.raw`${fileText}`
-        .replace(doubleQuotes, backTick);
+    const text = await getFileText(file);
     const exportFileText = getExportText({
-        name: exportFileNameJson,
-        fileText: rawText
+        name,
+        text
     });
 
     createFile(exportFile, exportFileText);

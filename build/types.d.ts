@@ -24,7 +24,7 @@ export interface IExportToBrowserJson {
     file: string;
 }
 export interface IGetExportText {
-    fileText: string;
+    text: string;
     name: string;
 }
 export declare const regex: {

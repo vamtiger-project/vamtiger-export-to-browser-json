@@ -1,13 +1,12 @@
 import {
     IGetExportText,
     Selector,
-    MimeType,
     StringConstant,
     regex
 } from './types';
 
 const { jsonScript: prefix } = Selector;
-const { multiSpaces, newlines  } = regex;
+const { newlines  } = regex;
 const { space } = StringConstant;
 
 const { stringify } = JSON;
@@ -17,7 +16,7 @@ export default ({ text, name }: IGetExportText) => {
         name,
         text
     });
-    const exportText = `(() => {
+    const exportText = `(function(){
         const { stringify } = JSON;
         const selector = '${prefix}[data-name="${name}"]';
         const existingScript = document.querySelector(selector);
@@ -30,7 +29,7 @@ export default ({ text, name }: IGetExportText) => {
 
             document.head.appendChild(script);
         }
-    })()`.trim();
+    })()`.trim().replace(newlines, space);
 
     return exportText;
 }

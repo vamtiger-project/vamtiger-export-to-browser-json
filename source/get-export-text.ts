@@ -17,7 +17,7 @@ export default ({ text, name }: IGetExportText) => {
         text
     });
     const exportText = `(function(){
-        const { stringify } = JSON;
+        const stringify = JSON.stringify;
         const selector = '${prefix}[data-name="${name}"]';
         const existingScript = document.querySelector(selector);
         const script = !existingScript && document.createElement('script');
